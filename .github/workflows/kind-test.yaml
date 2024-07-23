@@ -31,3 +31,16 @@ jobs:
           kubectl version --client=true -o yaml
           kind --version
           helm version
+      -
+        name: Create Simple Node Cluster
+        run: |
+          echo "kind: Cluster
+          apiVersion: kind.x-k8s.io/v1alpha4
+          name: argo-oss-test
+          nodes:
+          - role: control-plane
+          - role: worker" >> config.yaml
+          
+          kind create cluster --config ./config.yaml --wait 20s
+
+          kubectl get nodes -o wide
