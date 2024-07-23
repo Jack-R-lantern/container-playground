@@ -1,0 +1,33 @@
+name: Build Image
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up environment (download Kubernetes dependencies)
+        run: |
+          TMP_DIR=$(mktemp -d)
+          # kubectl
+          curl -L https://dl.k8s.io/release/${{ vars.K8S_VERSION }}/bin/linux/amd64/kubectl -o ${TMP_DIR}/kubectl
+          
+          # kind
+          curl -Lo ${TMP_DIR}/kind https://kind.sigs.k8s.io/dl/${{ vars.KIND_VERSION }}/kind-linux-amd64
+          
+          # Helm
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+          
+          # Install
+          sudo cp ${TMP_DIR}/kubectl /usr/local/bin/kubectl
+          sudo cp ${TMP_DIR}/kind /usr/local/bin/kind
+          sudo chmod +x /usr/local/bin/*
+          sudo rm -rf ${TMP_DIR}
+          sudo rm -rf ./get_helm.sh
+
+          kubectl version --client=true -o yaml
+          kind --version
+          helm version
