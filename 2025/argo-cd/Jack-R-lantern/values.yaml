@@ -1,0 +1,17 @@
+project:
+  sourceRepos:
+    - https://github.com/argoproj/argocd-example-apps
+  destinations:
+    - namespace: octocat
+      server: https://kubernetes.default.svc
+
+application:
+  name: helm-guestbook
+  project: onboarding-project
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps
+    targetRevision: HEAD
+    path: helm-guestbook
+  destination:
+    namespace: octocat
+    server: https://kubernetes.default.svc

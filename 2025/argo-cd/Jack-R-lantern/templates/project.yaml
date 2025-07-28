@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: onboarding-project
+  namespace: argocd
+spec:
+  sourceRepos:
+{{ toYaml .Values.project.sourceRepos | indent 4 }}
+  destinations:
+{{ toYaml .Values.project.destinations | indent 4 }}
+  namespaceResourceWhitelist:
+    - group: apps
+      kind: Deployment
+    - group: ""
+      kind: Service

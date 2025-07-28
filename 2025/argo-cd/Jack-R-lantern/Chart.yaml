@@ -1,0 +1,5 @@
+apiVersion: v2
+name: argo-onboarding
+version: 0.1.0
+description: Helm chart to deploy AppProject and Application for Argo CD onboarding
+type: application
